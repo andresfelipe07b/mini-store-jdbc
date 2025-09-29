@@ -14,9 +14,7 @@ import java.util.List;
 public class ProductRepositoryImpl implements Repository<Product>{
     @Override
     public Product create(Product product) {
-        Product objProduct = (Product) product;
         String sql = "INSERT INTO products(name, price, stock) VALUES (?, ?, ?)";
-
         try( Connection connection = ConfigDb.getConnection();
              PreparedStatement objPrepare = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)
         ){
@@ -27,12 +25,12 @@ public class ProductRepositoryImpl implements Repository<Product>{
             ResultSet rs = objPrepare.getGeneratedKeys();
 
             while(rs.next()){
-                objProduct.setId(rs.getInt(1));
+                product.setId(rs.getInt(1));
             }
         }catch(SQLException error){
             JOptionPane.showMessageDialog(null, "Product creation error: " + error.getMessage());
         }
-        return objProduct;
+        return product;
 
     }
 
@@ -84,16 +82,15 @@ public class ProductRepositoryImpl implements Repository<Product>{
 
     @Override
     public boolean update(Product product) {
-        Product objProduct = (Product) product;
         String sql = "UPDATE products SET name = ?, price = ?, stock = ? WHERE id = ?";
         boolean isUpdated = false;
         try(Connection connection = ConfigDb.getConnection();
             PreparedStatement objPrepare = connection.prepareStatement(sql);
         ){
-            objPrepare.setString(1, objProduct.getName());
-            objPrepare.setDouble(2, objProduct.getPrice());
-            objPrepare.setInt(3, objProduct.getStock());
-            objPrepare.setInt(4, objProduct.getId());
+            objPrepare.setString(1, product.getName());
+            objPrepare.setDouble(2, product.getPrice());
+            objPrepare.setInt(3, product.getStock());
+            objPrepare.setInt(4, product.getId());
 
             int result = objPrepare.executeUpdate();
             if(result > 0){
@@ -110,14 +107,13 @@ public class ProductRepositoryImpl implements Repository<Product>{
     @Override
     public boolean delete(Product product) {
         boolean isDeleted = false;
-        Product objProduct = (Product) product;
         String sql = "DELETE FROM products WHERE id = ?";
         try(
             Connection connection = ConfigDb.getConnection();
             PreparedStatement objPrepare = connection.prepareStatement(sql);
             ){
 
-            objPrepare.setInt(1, objProduct.getId());
+            objPrepare.setInt(1, product.getId());
             int result = objPrepare.executeUpdate();
             if(result > 0){
                 isDeleted = true;
