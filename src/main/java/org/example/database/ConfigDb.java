@@ -45,16 +45,4 @@ public class ConfigDb {
         }
         return objConnection;
     }
-//    public static void closeConnection(){
-//        try{
-//            if(objConnection != null) {
-//                objConnection.close();
-//                objConnection = null;
-//                System.out.println("Connection closed successfully");
-//            }
-//
-//        }catch (SQLException error){
-//            System.out.println("Error closing connection: " + error.getMessage());
-//        }
-//    }
 }

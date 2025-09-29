@@ -130,27 +130,5 @@ public class ProductRepositoryImpl implements Repository<Product>{
         return isDeleted;
     }
 
-    public List<Product> findByName(String name) {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE name LIKE ?";
-        try (Connection connection = ConfigDb.getConnection();
-             PreparedStatement objPrepare = connection.prepareStatement(sql)
-        ) {
-            objPrepare.setString(1, "%" + name + "%");
-            ResultSet rs = objPrepare.executeQuery();
-
-            while (rs.next()) {
-                Product objProduct = new Product();
-                objProduct.setId(rs.getInt("id"));
-                objProduct.setName(rs.getString("name"));
-                objProduct.setPrice(rs.getDouble("price"));
-                objProduct.setStock(rs.getInt("stock"));
-                products.add(objProduct);
-            }
-        } catch (SQLException error) {
-            JOptionPane.showMessageDialog(null, "Error searching products: " + error.getMessage());
-        }
-        return products;
-    }
 
 }
